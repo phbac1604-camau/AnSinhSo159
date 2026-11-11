@@ -716,9 +716,11 @@
             <span class="text-[11px] font-semibold text-slate-400 whitespace-nowrap">Câu hỏi phổ biến:</span>
             <button type="button" data-q="Rút BHXH 1 lần từ 01/07/2025 quy định thế nào?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Rút BHXH 1 lần sau 1/7/2025?</button>
             <button type="button" data-q="Đóng BHXH đủ 15 năm được hưởng lương hưu bao nhiêu %?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Đóng 15 năm hưởng lương hưu?</button>
-            <button type="button" data-q="Mức hưởng trợ cấp thất nghiệp tối đa năm 2026 là bao nhiêu?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Trần BHTN tối đa 2026?</button>
-            <button type="button" data-q="BHXH tự nguyện có được hưởng chế độ thai sản không?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Thai sản BHXH tự nguyện?</button>
-            <button type="button" data-q="Trợ cấp hưu trí xã hội cho người từ 70 và 75 tuổi?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Trợ cấp hưu trí xã hội 75 tuổi?</button>
+            <button type="button" data-q="Công ty nợ đóng BHXH thì chế độ thai sản và ốm đau của tôi giải quyết thế nào?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Công ty nợ BHXH?</button>
+            <button type="button" data-q="Trợ cấp hưu trí xã hội cho người từ 70 và 75 tuổi không có lương hưu?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Trợ cấp hưu trí 75 tuổi?</button>
+            <button type="button" data-q="Vợ sinh mổ thì chồng đóng BHXH được nghỉ mấy ngày và tiền hưởng thế nào?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Chồng nghỉ khi vợ sinh mổ?</button>
+            <button type="button" data-q="Khám bệnh BHYT 3 cấp chuyên môn và trường hợp không cần giấy chuyển tuyến?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Miễn chuyển tuyến BHYT?</button>
+            <button type="button" data-q="Mức hưởng trợ cấp thất nghiệp tối đa năm 2026 và hạn nộp 3 tháng?" class="quick-q-btn text-[11px] bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-700 border border-slate-200 rounded-full px-3 py-1 whitespace-nowrap transition">Bảo hiểm thất nghiệp 2026?</button>
           </div>
 
           <!-- Chat Messages Area -->
@@ -2213,71 +2215,671 @@
       }
 
       function generateSmartReply(question) {
-        const q = question.toLowerCase();
-        const reg = REGION_CONFIG[state.regionId];
+        const context = { baseSalary: state.baseSalary, regionId: state.regionId };
+  const q = (question || '').toLowerCase().trim();
+  const baseSalary = context.baseSalary || 2530000;
+  const baseSalaryStr = baseSalary.toLocaleString('vi-VN') + ' đ';
 
-        if (q.includes('1 lần') || q.includes('một lần') || q.includes('rút bhxh')) {
-          return `
-            <strong>Quy định về Rút BHXH một lần (Điều 70 Luật BHXH số 41/2024/QH15):</strong><br/>
-            • <strong>Người có thời gian đóng BHXH trước ngày 01/07/2025:</strong> Sau 12 tháng nghỉ việc không tiếp tục đóng BHXH và chưa đủ 20 năm đóng thì <strong>vẫn được rút BHXH 1 lần</strong> như quy định cũ.<br/>
-            • <strong>Người bắt đầu tham gia BHXH lần đầu từ ngày 01/07/2025 trở đi:</strong> Chỉ giải quyết rút BHXH 1 lần khi thuộc 1 trong 4 trường hợp: (1) Đủ tuổi nghỉ hưu mà chưa đủ 15 năm đóng; (2) Ra nước ngoài định cư; (3) Mắc bệnh ung thư, bại liệt, xơ gan mất bù, lao nặng, AIDS; (4) Suy giảm KNLĐ từ 81% trở lên hoặc khuyết tật đặc biệt nặng.<br/>
-            • <em>Mức hưởng:</em> 1,5 tháng lương bình quân cho mỗi năm đóng trước 2014 và 2,0 tháng cho mỗi năm đóng từ 2014 trở đi.
-          `;
-        }
-        if (q.includes('15 năm') || q.includes('lương hưu') || q.includes('nghỉ hưu') || q.includes('tuổi hưu')) {
-          return `
-            <strong>Quy định mới về Lương hưu từ 15 năm đóng (Điều 64, 66 Luật BHXH 2024):</strong><br/>
-            • Từ ngày 01/07/2025, người lao động chỉ cần đóng BHXH từ đủ <strong>15 năm trở lên</strong> và đủ tuổi nghỉ hưu (năm 2026: <strong>Nam 61 tuổi 6 tháng, Nữ 57 tuổi</strong>) là được nhận lương hưu hằng tháng.<br/>
-            • <strong>Cách tính tỷ lệ hưởng:</strong><br/>
-            - <strong>Lao động Nữ:</strong> 15 năm đóng = <strong>45%</strong>, sau đó mỗi năm đóng thêm tính +2%, tối đa 75% (ở 30 năm).<br/>
-            - <strong>Lao động Nam:</strong> Đóng 15 năm = <strong>40%</strong>, mỗi năm đóng thêm từ năm 16 đến 20 tính +1% (đủ 20 năm = 45%), sau đó mỗi năm thêm +2%, tối đa 75% (ở 35 năm).
-          `;
-        }
-        if (q.includes('thất nghiệp') || q.includes('bhtn') || q.includes('tctn')) {
-          return `
-            <strong>Chế độ Bảo hiểm thất nghiệp năm 2026 (Luật Việc làm 2025 số 74/2025/QH15 & NĐ 293/2025/NĐ-CP):</strong><br/>
-            • <strong>Mức hưởng hằng tháng:</strong> Bằng <strong>60%</strong> bình quân tiền lương tháng đóng BHTN của 6 tháng liền kề trước khi nghỉ việc.<br/>
-            • <strong>Trần tối đa mới từ 01/01/2026:</strong> Thống nhất tối đa bằng <strong>05 lần mức lương tối thiểu vùng</strong> cho mọi người lao động (Vùng I: <strong>26.550.000đ/tháng</strong>; Vùng II: <strong>23.650.000đ</strong>; Vùng III: <strong>20.700.000đ</strong>; Vùng IV: <strong>18.500.000đ</strong>).<br/>
-            • <strong>Thời hạn nộp hồ sơ:</strong> Trong vòng 03 tháng kể từ ngày chấm dứt HĐLĐ. Ngoài tiền trợ cấp, bạn được cấp thẻ BHYT miễn phí và hỗ trợ học nghề + tiền ăn.
-          `;
-        }
-        if (q.includes('thai sản') || q.includes('sinh con') || q.includes('tự nguyện')) {
-          return `
-            <strong>Chế độ Thai sản (Luật BHXH 2024):</strong><br/>
-            • <strong>BHXH Tự nguyện (Điểm mới Điều 94, 95):</strong> Đóng BHXH tự nguyện từ đủ 6 tháng trở lên trong 12 tháng trước khi sinh con được nhận trợ cấp thai sản <strong>2.000.000 đồng/con</strong> do Ngân sách Nhà nước đảm bảo.<br/>
-            • <strong>BHXH Bắt buộc:</strong> Nghỉ 6 tháng hưởng 100% mức bình quân tiền lương đóng BHXH 6 tháng trước khi nghỉ + Trợ cấp 1 lần bằng <strong>2 lần mức tham chiếu</strong> (${formatVND(state.baseSalary * 2)}/con). Người chồng đóng BHXH được nghỉ 5 - 14 ngày làm việc.
-          `;
-        }
-        if (q.includes('75 tuổi') || q.includes('70 tuổi') || q.includes('hưu trí xã hội') || q.includes('người cao tuổi')) {
-          return `
-            <strong>Trợ cấp Hưu trí xã hội (Điều 21 Luật BHXH 2024):</strong><br/>
-            • Công dân Việt Nam từ đủ <strong>75 tuổi trở lên</strong> (hoặc từ đủ <strong>70 tuổi đến dưới 75 tuổi</strong> thuộc hộ nghèo, hộ cận nghèo) không có lương hưu hoặc trợ cấp BHXH hằng tháng sẽ được hưởng Trợ cấp hưu trí xã hội hằng tháng do Ngân sách Nhà nước bảo đảm, được cấp thẻ BHYT miễn phí và hỗ trợ mai táng phí khi qua đời.
-          `;
-        }
-        if (q.includes('lương cơ sở') || q.includes('tham chiếu') || q.includes('tối thiểu vùng') || q.includes('161/2026') || q.includes('293/2025')) {
-          return `
-            <strong>Thông số Tiền lương & Mức tham chiếu năm 2026:</strong><br/>
-            • <strong>Mức lương cơ sở / Mức tham chiếu:</strong> Từ 01/07/2026 là <strong>2.530.000 đồng/tháng</strong> theo Nghị định 161/2026/NĐ-CP (tăng từ 2.340.000 đồng/tháng). Trần đóng BHXH, BHYT (20 lần) là <strong>50.600.000 đồng/tháng</strong>.<br/>
-            • <strong>Lương tối thiểu vùng từ 01/01/2026 (Nghị định 293/2025/NĐ-CP):</strong> Vùng I: <strong>5.310.000đ</strong>; Vùng II: <strong>4.730.000đ</strong>; Vùng III: <strong>4.140.000đ</strong>; Vùng IV: <strong>3.700.000đ</strong>.
-          `;
-        }
-        if (q.includes('ốm') || q.includes('nửa ngày') || q.includes('dài ngày')) {
-          return `
-            <strong>Chế độ Ốm đau (Điều 42 - 49 Luật BHXH 2024):</strong><br/>
-            • Mức hưởng thông thường bằng <strong>75%</strong> tiền lương đóng BHXH của tháng liền kề trước khi nghỉ.<br/>
-            • <strong>Điểm mới:</strong> Chính thức tính hưởng ốm đau cho cả trường hợp <strong>nghỉ không trọn ngày</strong> (dưới nửa ngày tính bằng 1/2 ngày; từ nửa ngày đến dưới 1 ngày tính là 1 ngày). Nghỉ ốm từ 14 ngày làm việc trở lên trong tháng được Quỹ BHXH đóng BHYT.
-          `;
-        }
+  // Helper format VND
+  const fmt = (num) => Math.round(num).toLocaleString('vi-VN') + ' đ';
 
-        return `
-          <strong>Phản hồi từ Hệ thống Tư vấn Pháp luật BHXH • BHYT • BHTN 2026:</strong><br/>
-          Câu hỏi của bạn liên quan đến chế độ chính sách hiện hành. Theo hệ thống văn bản mới nhất năm 2026:<br/>
-          • <strong>BHXH (Luật 41/2024/QH15):</strong> Đóng đủ 15 năm hưởng lương hưu; mức tham chiếu từ 01/07/2026 là <strong>${formatVND(state.baseSalary)}</strong> (NĐ 161/2026/NĐ-CP).<br/>
-          • <strong>BHYT (Luật 51/2024/QH15):</strong> Khám chữa bệnh theo 3 cấp chuyên môn (Ban đầu, Cơ bản, Chuyên sâu), miễn giấy chuyển tuyến với bệnh hiểm nghèo/bệnh hiếm lên cấp chuyên sâu.<br/>
-          • <strong>BHTN (Luật Việc làm 74/2025/QH15):</strong> Hưởng 60% lương bình quân, tối đa 5 lần lương tối thiểu vùng (${reg.name}: <strong>${formatVND(reg.maxBenefit)}/tháng</strong>).<br/>
-          <em>Bạn có thể bấm vào tab <strong>"Công cụ Tính toán"</strong> để tính số tiền cụ thể hoặc chọn các chủ đề gợi ý phía trên!</em>
+  // 1. TRỢ CẤP HƯU TRÍ XÃ HỘI (Người cao tuổi không có lương hưu, từ 75 tuổi hoặc 70-75 tuổi)
+  if (
+    q.includes('75 tuổi') ||
+    q.includes('70 tuổi') ||
+    q.includes('76 tuổi') ||
+    q.includes('77 tuổi') ||
+    q.includes('78 tuổi') ||
+    q.includes('79 tuổi') ||
+    q.includes('80 tuổi') ||
+    q.includes('hưu trí xã hội') ||
+    q.includes('không có lương hưu') ||
+    (q.includes('người cao tuổi') && !q.includes('tuổi nghỉ hưu'))
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Chính sách Trợ cấp Hưu trí Xã hội cho Người Cao Tuổi (Luật BHXH 2024)</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, trường hợp người cao tuổi không có lương hưu là vấn đề rất được Đảng và Nhà nước quan tâm trong lần cải cách này. Căn cứ vào <strong>Điều 21, Điều 22 Luật Bảo hiểm xã hội số 41/2024/QH15</strong> (có hiệu lực từ ngày 01/07/2025), quy định cụ thể như sau:
+        </p>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs space-y-2 text-slate-800">
+          <div class="font-bold text-emerald-950">🎯 1. Điều kiện hưởng Trợ cấp hưu trí xã hội:</div>
+          <ul class="list-disc list-inside space-y-1 text-slate-700">
+            <li>Công dân Việt Nam <strong>từ đủ 75 tuổi trở lên</strong> không có lương hưu hoặc trợ cấp BHXH hằng tháng khác (đã hạ 5 tuổi so với mức 80 tuổi trước đây).</li>
+            <li>Công dân <strong>từ đủ 70 tuổi đến dưới 75 tuổi</strong> thuộc diện <strong>hộ nghèo, hộ cận nghèo</strong> và không có lương hưu.</li>
+          </ul>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-700">
+          <div class="font-bold text-slate-900">🎁 Các gói quyền lợi được hưởng:</div>
+          <div>• <strong>Tiền trợ cấp hằng tháng:</strong> Do Ngân sách Nhà nước bảo đảm, mức hưởng được Chính phủ điều chỉnh tăng định kỳ theo điều kiện kinh tế.</div>
+          <div>• <strong>Cấp thẻ BHYT Miễn Phí:</strong> Được cấp thẻ BHYT miễn phí 100% trong toàn bộ thời gian nhận trợ cấp.</div>
+          <div>• <strong>Chế độ mai táng:</strong> Khi qua đời, thân nhân hoặc tổ chức mai táng được Nhà nước hỗ trợ một khoản tiền mai táng phí chu đáo.</div>
+        </div>
+
+        <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed">
+          <strong>💡 Giải pháp nếu chưa đủ 75 tuổi:</strong> Nếu người cao tuổi đã từng có một số năm đóng BHXH nhưng chưa đủ 15 năm, có thể chọn phương án nhận <em>trợ cấp hằng tháng liên kết từ chính quỹ BHXH đã đóng</em> + được cấp thẻ BHYT miễn phí cho đến khi đủ 75 tuổi để nối thẳng sang trợ cấp hưu trí xã hội!
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Điều 21, 22, 23 Luật BHXH 41/2024/QH15</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Xem văn bản tại baohiemxahoi.gov.vn &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. DOANH NGHIỆP NỢ ĐÓNG, CHẬM ĐÓNG, TRỐN ĐÓNG BHXH
+  if (
+    q.includes('chậm đóng') ||
+    q.includes('trốn đóng') ||
+    q.includes('nợ bảo hiểm') ||
+    q.includes('công ty nợ') ||
+    q.includes('nợ tiền') ||
+    q.includes('bị nợ') ||
+    q.includes('không đóng bhxh') ||
+    q.includes('doanh nghiệp nợ') ||
+    q.includes('công ty phá sản')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Bảo vệ quyền lợi khi Doanh nghiệp Chậm Đóng, Trốn Đóng BHXH</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, đây là một thực trạng gây rất nhiều bức xúc và lo lắng cho người lao động. Căn cứ <strong>Điều 36 đến Điều 41 Luật BHXH số 41/2024/QH15</strong> và <strong>Quyết định 595/QĐ-BHXH</strong>, cơ quan pháp luật quy định nguyên tắc bảo vệ bạn như sau:
+        </p>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-800">
+          <div class="font-bold text-slate-900">📌 1. Quyền lợi Thai sản, Ốm đau khi Công ty đang nợ tiền đóng:</div>
+          <div>Theo quy định, cơ quan BHXH vẫn <strong>xác nhận thời gian đã đóng thực tế</strong> đến thời điểm công ty nợ. Nếu tính đến trước thời điểm công ty bắt đầu nợ (hoặc tổng thời gian đã đóng) mà bạn đã <strong>đủ từ 6 tháng đóng BHXH trong 12 tháng trước khi sinh</strong>, cơ quan BHXH sẽ tiếp nhận hồ sơ và <strong>chi trả chế độ thai sản trực tiếp cho bạn</strong> qua tài khoản cá nhân, không để doanh nghiệp nợ làm gián đoạn quyền lợi của người mẹ và trẻ sơ sinh!</div>
+        </div>
+
+        <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs space-y-1 text-slate-800">
+          <div class="font-bold text-amber-950">⚖️ 2. Chế tài đối với Doanh nghiệp từ 01/07/2025:</div>
+          <div>• Bắt buộc nộp đủ số tiền trốn đóng + nộp <strong>tiền lãi 0,03%/ngày</strong> trên số tiền và số ngày vi phạm.</div>
+          <div>• Người đại diện pháp luật của doanh nghiệp trốn đóng BHXH từ 12 tháng trở lên có thể bị <strong>tạm hoãn xuất cảnh</strong> và truy cứu trách nhiệm hình sự theo <strong>Điều 216 Bộ luật Hình sự</strong>.</div>
+        </div>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs space-y-1 text-slate-800">
+          <div class="font-bold text-emerald-950">📋 Trình tự thủ tục bạn cần tiến hành ngay:</div>
+          <div>1. Mở ứng dụng <strong>VssID</strong> hoặc Cổng dịch vụ công để in sao kê quá trình đóng bảo hiểm.</div>
+          <div>2. Làm đơn kiến nghị gửi Ban Giám đốc và Ban Chấp hành Công đoàn công ty.</div>
+          <div>3. Nếu công ty không giải quyết, gửi đơn khiếu nại tới <strong>Thanh tra Sở Lao động - TB&XH</strong> hoặc <strong>Cơ quan BHXH quận/huyện</strong> nơi doanh nghiệp đóng để can thiệp thanh tra xử lý gấp.</div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Điều 36 - 41 Luật BHXH 41/2024/QH15 & Điều 216 BLHS</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Tổng đài giải đáp BHXH VN: 1900 9068 &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 3. RÚT BHXH 1 LẦN
+  if (
+    q.includes('rút bhxh') ||
+    q.includes('1 lần') ||
+    q.includes('một lần') ||
+    q.includes('rut bhxh') ||
+    q.includes('lấy bảo hiểm một lần') ||
+    q.includes('thanh toán một lần')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Tư vấn chế độ Rút Bảo hiểm xã hội một lần</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, vấn đề rút BHXH một lần là một quyết định tài chính an sinh rất quan trọng. Căn cứ vào <strong>Điều 70 và Điều 102 Luật Bảo hiểm xã hội số 41/2024/QH15</strong> (có hiệu lực từ ngày 01/07/2025), quy định được chia thành 2 nhóm đối tượng rất rõ ràng như sau:
+        </p>
+
+        <div class="bg-amber-50/80 border-l-4 border-amber-500 p-3 rounded-r-xl text-xs space-y-1.5 text-slate-800">
+          <div class="font-bold text-amber-900">📌 1. Người có thời gian đóng BHXH TRƯỚC ngày 01/07/2025:</div>
+          <div>Bạn <strong>VẪN ĐƯỢC QUYỀN RÚT BHXH MỘT LẦN</strong> theo quy định sau khi nghỉ việc <strong>đủ 12 tháng</strong> mà không tiếp tục tham gia BHXH và chưa đủ 20 năm đóng. Toàn bộ quyền lợi tích lũy trước đây của bạn được bảo lưu trọn vẹn.</div>
+        </div>
+
+        <div class="bg-blue-50/80 border-l-4 border-blue-500 p-3 rounded-r-xl text-xs space-y-1.5 text-slate-800">
+          <div class="font-bold text-blue-900">📌 2. Người bắt đầu tham gia BHXH lần đầu TỪ ngày 01/07/2025 trở đi:</div>
+          <div>Để bảo đảm an sinh tuổi già, người thuộc nhóm này <strong>chỉ được rút một lần trong 4 trường hợp đặc biệt</strong>:
+            <ul class="list-disc list-inside mt-1 space-y-0.5 text-slate-700">
+              <li>Đã đủ tuổi nghỉ hưu theo quy định mà chưa đủ 15 năm đóng BHXH.</li>
+              <li>Ra nước ngoài để định cư hợp pháp.</li>
+              <li>Mắc một trong các bệnh hiểm nghèo: ung thư, bại liệt, xơ gan mất bù, lao nặng, AIDS...</li>
+              <li>Bị suy giảm khả năng lao động từ 81% trở lên hoặc người khuyết tật đặc biệt nặng.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1 text-slate-700">
+          <div class="font-bold text-slate-900">💰 Công thức tính số tiền hưởng:</div>
+          <div>• <strong>1,5 tháng</strong> mức bình quân tiền lương đóng BHXH cho những năm đóng <em>trước năm 2014</em>.</div>
+          <div>• <strong>2,0 tháng</strong> mức bình quân tiền lương đóng BHXH cho những năm đóng <em>từ năm 2014 trở đi</em>.</div>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-900 leading-relaxed">
+          <strong>💡 Lời khuyên của chuyên gia:</strong> Nếu bạn đang cần vốn ngắn hạn, hãy cân nhắc chính sách mới cho phép <em>vay vốn tín dụng ưu đãi</em> thông qua bảo lưu sổ BHXH, hoặc giữ lại thời gian đóng để sau này chỉ cần đủ <strong>15 năm</strong> là đã có <strong>lương hưu suốt đời</strong> và thẻ BHYT thanh toán 95% miễn phí!
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Điều 70, Điều 102 Luật BHXH 41/2024/QH15</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Tra cứu tại baohiemxahoi.gov.vn &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 4. LƯƠNG HƯU & TÍNH TỶ LỆ HƯỞNG THEO SỐ NĂM ĐÓNG (CÓ TRÍCH XUẤT THÔNG MINH)
+  if (
+    q.includes('lương hưu') ||
+    q.includes('nghỉ hưu') ||
+    q.includes('tuổi hưu') ||
+    q.includes('15 năm') ||
+    q.includes('hưu trí') ||
+    q.includes('tỷ lệ hưởng')
+  ) {
+    // Trích xuất số năm đóng nếu người dùng nhập
+    const yearsMatch = q.match(/([0-9]{1,2})\s*năm/);
+    const years = yearsMatch ? parseInt(yearsMatch[1], 10) : null;
+    const isMale = q.includes('nam') || q.includes('anh') || q.includes('ông');
+    const isFemale = q.includes('nữ') || q.includes('chị') || q.includes('bà') || q.includes('cô');
+
+    let customCalcText = '';
+    if (years && years >= 15) {
+      let maleRate = 0;
+      if (years <= 20) {
+        maleRate = 40 + (years - 15) * 1;
+      } else {
+        maleRate = Math.min(75, 45 + (years - 20) * 2);
+      }
+      const femaleRate = Math.min(75, 45 + (years - 15) * 2);
+
+      if (isMale) {
+        customCalcText = `
+          <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs space-y-1 text-slate-800">
+            <div class="font-bold text-amber-950">🎯 Tính toán cụ thể cho trường hợp của bạn (Lao động Nam, đóng ${years} năm):</div>
+            <div>• 15 năm đầu: Hưởng <strong>40%</strong>.</div>
+            ${years <= 20 ? `<div>• ${years - 15} năm tiếp theo (từ năm 16 đến ${years}): Mỗi năm +1% = +${years - 15}%.</div>` : `<div>• Từ năm 16 đến 20 (+5%): Đủ 20 năm = 45%.</div><div>• ${years - 20} năm tiếp theo (từ năm 21 đến ${years}): Mỗi năm +2% = +${(years - 20) * 2}%.</div>`}
+            <div>👉 <strong>TỔNG TỶ LỆ HƯỞNG LƯƠNG HƯU CỦA BẠN LÀ: <span class="text-amber-700 text-sm font-extrabold">${maleRate}%</span></strong> mức bình quân tiền lương tháng đóng BHXH.</div>
+          </div>
+        `;
+      } else if (isFemale) {
+        customCalcText = `
+          <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs space-y-1 text-slate-800">
+            <div class="font-bold text-amber-950">🎯 Tính toán cụ thể cho trường hợp của bạn (Lao động Nữ, đóng ${years} năm):</div>
+            <div>• 15 năm đầu: Hưởng <strong>45%</strong>.</div>
+            <div>• ${years - 15} năm tiếp theo: Mỗi năm +2% = +${(years - 15) * 2}%.</div>
+            <div>👉 <strong>TỔNG TỶ LỆ HƯỞNG LƯƠNG HƯU CỦA BẠN LÀ: <span class="text-amber-700 text-sm font-extrabold">${femaleRate}%</span></strong> mức bình quân tiền lương tháng đóng BHXH.</div>
+          </div>
+        `;
+      } else {
+        customCalcText = `
+          <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs space-y-1 text-slate-800">
+            <div class="font-bold text-amber-950">🎯 Tính toán nhanh theo số năm bạn đã đóng (${years} năm):</div>
+            <div>• <strong>Nếu là Nam:</strong> Tỷ lệ hưởng là <strong>${maleRate}%</strong> mức lương bình quân.</div>
+            <div>• <strong>Nếu là Nữ:</strong> Tỷ lệ hưởng là <strong>${femaleRate}%</strong> mức lương bình quân.</div>
+          </div>
         `;
       }
+    }
+
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Điều kiện hưởng Lương Hưu & Cách tính tỷ lệ theo Luật BHXH 2024</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, Luật Bảo hiểm xã hội 2024 (số 41/2024/QH15) có hiệu lực từ ngày 01/07/2025 mang lại một bước đột phá nhân văn bậc nhất: <strong>giảm thời gian đóng BHXH tối thiểu để hưởng lương hưu từ 20 năm xuống còn ĐỦ 15 NĂM</strong>.
+        </p>
+
+        ${customCalcText}
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+            <div class="font-bold text-slate-900 mb-1">📅 Tuổi nghỉ hưu năm 2026:</div>
+            <div class="text-slate-600 space-y-1 text-[11px]">
+              <div>• <strong>Lao động Nam:</strong> Đủ <strong>61 tuổi 6 tháng</strong>.</div>
+              <div>• <strong>Lao động Nữ:</strong> Đủ <strong>57 tuổi 0 tháng</strong>.</div>
+              <div class="text-slate-400 mt-1">(Theo lộ trình Điều 169 Bộ luật Lao động 2019)</div>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+            <div class="font-bold text-slate-900 mb-1">📊 Quy chuẩn tỷ lệ hưởng chung (Điều 66):</div>
+            <div class="text-slate-600 space-y-1 text-[11px]">
+              <div>• <strong>Nữ:</strong> 15 năm = 45%, mỗi năm thêm +2%, tối đa 75% ở 30 năm.</div>
+              <div>• <strong>Nam:</strong> 15 năm = 40%, từ năm 16 - 20 thêm +1%/năm, từ năm 21 thêm +2%/năm, tối đa 75% ở 35 năm.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-100 p-3 rounded-xl text-xs space-y-1 text-slate-700">
+          <div class="font-bold text-slate-900">🎁 Quyền lợi suốt đời khi hưởng lương hưu:</div>
+          <div>1. Được Nhà nước <strong>cấp Thẻ BHYT Miễn Phí</strong> với mức thanh toán lên tới <strong>95%</strong> viện phí.</div>
+          <div>2. Mức lương hưu được Chính phủ <strong>điều chỉnh tăng định kỳ</strong> theo chỉ số CPI.</div>
+          <div>3. Khi qua đời, thân nhân được hưởng <strong>mai táng phí (= 10 lần mức tham chiếu)</strong> và <strong>tiền tuất</strong> hàng tháng hoặc một lần.</div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Điều 64, 65, 66, 67 Luật BHXH 41/2024/QH15</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Chính sách Hưu trí BHXH VN &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 5. THAI SẢN (NỮ VÀ NAM, ĐẶC BIỆT BHXH TỰ NGUYỆN)
+  if (
+    q.includes('thai sản') ||
+    q.includes('sinh con') ||
+    q.includes('sinh mổ') ||
+    q.includes('chồng nghỉ') ||
+    q.includes('vợ sinh') ||
+    q.includes('nghỉ đẻ') ||
+    q.includes('con nuôi') ||
+    q.includes('sảy thai')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Chế độ Thai Sản cho Lao động Nữ, Lao động Nam & BHXH Tự Nguyện</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, chính sách thai sản theo Luật BHXH 2024 có nhiều ưu việt vượt trội bảo bọc toàn diện người mẹ, người cha và người tham gia BHXH tự nguyện:
+        </p>
+
+        <div class="space-y-2.5 text-xs">
+          <!-- Điểm mới BHXH tự nguyện -->
+          <div class="bg-amber-50 border border-amber-300 p-3 rounded-xl text-slate-800">
+            <span class="font-bold text-amber-900">🌟 Điểm mới đặc biệt (Điều 94, 95): Trợ cấp thai sản trong BHXH TỰ NGUYỆN</span>
+            <p class="mt-1 text-slate-700">
+              Người tham gia BHXH tự nguyện (bao gồm cả lao động nữ hoặc lao động nam có vợ sinh con) chỉ cần đóng từ đủ <strong>06 tháng trở lên trong thời gian 12 tháng trước khi sinh con</strong> sẽ được nhận khoản trợ cấp thai sản là <strong>2.000.000 đồng/con</strong> do <em>Ngân sách Nhà nước chi trả 100%</em> (không phải trừ vào quỹ đóng hưu trí).
+            </p>
+          </div>
+
+          <!-- BHXH bắt buộc đối với nữ -->
+          <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-800">
+            <span class="font-bold text-slate-900">🤱 Lao động Nữ tham gia BHXH Bắt buộc:</span>
+            <ul class="list-disc list-inside mt-1 space-y-1 text-slate-700">
+              <li><strong>Thời gian nghỉ sinh:</strong> Được nghỉ <strong>06 tháng</strong> (sinh đôi trở lên, từ con thứ 2 mỗi con thêm 01 tháng).</li>
+              <li><strong>Mức tiền hưởng hằng tháng:</strong> Bằng <strong>100% mức bình quân tiền lương tháng</strong> đóng BHXH của 06 tháng trước khi nghỉ việc.</li>
+              <li><strong>Trợ cấp một lần khi sinh con (tiền tã lót):</strong> Bằng <strong>02 lần mức tham chiếu</strong> cho mỗi con = <strong>${fmt(baseSalary * 2)}</strong> (áp dụng mức tham chiếu ${baseSalaryStr}).</li>
+            </ul>
+          </div>
+
+          <!-- Chế độ người chồng -->
+          <div class="bg-blue-50/70 border border-blue-200 p-3 rounded-xl text-slate-800">
+            <span class="font-bold text-blue-900">👨 Lao động Nam có vợ sinh con (đóng BHXH bắt buộc):</span>
+            <div class="mt-1 text-slate-700 space-y-1">
+              <div>Số ngày nghỉ việc hưởng lương BHXH (trong vòng 30 ngày đầu kể từ ngày vợ sinh):</div>
+              <ul class="list-disc list-inside pl-2 space-y-0.5">
+                <li>Vợ sinh thường: Được nghỉ <strong>05 ngày làm việc</strong>.</li>
+                <li>Vợ sinh con phải phẫu thuật (sinh mổ) hoặc sinh dưới 32 tuần: Được nghỉ <strong>07 ngày làm việc</strong>.</li>
+                <li>Vợ sinh đôi: Nghỉ <strong>10 ngày làm việc</strong> (từ sinh ba trở lên, mỗi con thêm 03 ngày).</li>
+                <li>Sinh đôi phải mổ: Nghỉ <strong>14 ngày làm việc</strong>.</li>
+              </ul>
+              <div class="text-[11px] text-blue-800 mt-1 font-semibold">• Mức tiền hưởng mỗi ngày = (Lương bình quân 6 tháng / 24) x Số ngày nghỉ. Nếu vợ không tham gia BHXH, chồng còn được nhận trợ cấp 1 lần = 2 lần mức tham chiếu!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Điều 51 đến Điều 63 và Điều 94, 95 Luật BHXH 41/2024/QH15</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Hướng dẫn hồ sơ thai sản &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 6. BẢO HIỂM THẤT NGHIỆP (BHTN)
+  if (
+    q.includes('thất nghiệp') ||
+    q.includes('bhtn') ||
+    q.includes('tctn') ||
+    q.includes('hạn nộp') ||
+    q.includes('nghỉ việc hưởng') ||
+    q.includes('mất việc') ||
+    q.includes('chấm dứt hợp đồng')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Chế độ Trợ cấp Thất nghiệp theo Luật Việc làm mới số 74/2025/QH15</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, Bảo hiểm thất nghiệp (BHTN) là phao cứu sinh bảo vệ nguồn thu nhập ngay khi bạn vừa chấm dứt hợp đồng lao động. Các quy định cốt lõi cần nắm rõ gồm:
+        </p>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <div class="font-bold text-slate-900">⏰ Thời hạn nộp hồ sơ (Rất quan trọng):</div>
+            <p class="text-slate-600">
+              Trong thời hạn <strong>03 tháng</strong> (khoảng 90 ngày) kể từ ngày chấm dứt HĐLĐ. <br/>
+              <em>Lưu ý:</em> Nếu quá thời hạn 03 tháng này mà chưa nộp, thời gian đóng BHTN của bạn <strong>TỰ ĐỘNG BẢO LƯU</strong> để cộng dồn cho lần hưởng tiếp theo chứ <strong>KHÔNG BỊ MẤT</strong>!
+            </p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <div class="font-bold text-slate-900">📝 Điều kiện để được giải quyết:</div>
+            <p class="text-slate-600">
+              Đã đóng BHTN từ đủ <strong>12 tháng trở lên trong thời gian 24 tháng</strong> trước khi chấm dứt HĐLĐ; không thuộc diện nghỉ việc trái pháp luật hoặc hưởng lương hưu.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl text-xs space-y-2 text-slate-800">
+          <div class="font-bold text-emerald-950">💵 Mức hưởng & Số tháng được nhận:</div>
+          <div class="space-y-1 text-slate-700">
+            <div>• <strong>Mức hưởng hằng tháng:</strong> Bằng <strong>60%</strong> mức bình quân tiền lương tháng đóng BHTN của 06 tháng liền kề trước khi nghỉ việc.</div>
+            <div>• <strong>Trần tối đa mới:</strong> Không quá <strong>05 lần mức lương tối thiểu vùng</strong> theo Nghị định 293/2025/NĐ-CP (Vùng I: 26.550.000đ; Vùng II: 23.650.000đ; Vùng III: 20.700.000đ; Vùng IV: 18.500.000đ).</div>
+            <div>• <strong>Số tháng hưởng:</strong> Đóng đủ 12 tháng đến đủ 36 tháng = hưởng <strong>03 tháng trợ cấp</strong>. Cứ mỗi 12 tháng đóng thêm = cộng thêm <strong>01 tháng trợ cấp</strong> (tối đa 12 tháng).</div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-slate-100 rounded-xl text-xs space-y-1 text-slate-700">
+          <div class="font-bold text-slate-900">🎁 Quyền lợi đi kèm:</div>
+          <div>• Được cấp <strong>Thẻ BHYT Miễn Phí</strong> trong toàn bộ những tháng đang nhận trợ cấp thất nghiệp.</div>
+          <div>• Hỗ trợ học nghề miễn phí (tối đa 1.500.000 đ/tháng) và tư vấn giới thiệu việc làm mới.</div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Luật Việc làm 74/2025/QH15 & Nghị định 293/2025/NĐ-CP</span>
+          <a href="https://dichvucong.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Nộp hồ sơ trực tuyến tại Cổng DVC &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 7. BHYT KHÁM CHỮA BỆNH, CHUYỂN TUYẾN, 3 CẤP CHUYÊN MÔN
+  if (
+    q.includes('bhyt') ||
+    q.includes('bảo hiểm y tế') ||
+    q.includes('khám bệnh') ||
+    q.includes('chuyển tuyến') ||
+    q.includes('trái tuyến') ||
+    q.includes('thông tuyến') ||
+    q.includes('viện phí') ||
+    q.includes('5 năm liên tục')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Quyền lợi Khám Chữa Bệnh BHYT & Chuyển Tuyến theo Luật BHYT số 51/2024/QH15</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, Luật sửa đổi, bổ sung một số điều của Luật Bảo hiểm y tế (số 51/2024/QH15) đã chính thức <strong>chuyển đổi mô hình phân tuyến hành chính sang 03 Cấp chuyên môn kỹ thuật</strong>, giúp bệnh nhân tiếp cận cơ sở y tế thuận lợi hơn rất nhiều:
+        </p>
+
+        <div class="grid sm:grid-cols-3 gap-2.5 text-xs">
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+            <div class="font-bold text-emerald-800 mb-1">🏥 1. Cấp Ban đầu:</div>
+            <p class="text-slate-600 text-[11px]">Trạm y tế xã/phường, phòng khám đa khoa, y tế cơ quan. Thanh toán <strong>100%</strong> chi phí đúng mức hưởng.</p>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+            <div class="font-bold text-emerald-800 mb-1">🏥 2. Cấp Cơ bản:</div>
+            <p class="text-slate-600 text-[11px]">Bệnh viện đa khoa khu vực, trung tâm y tế quận/huyện, bệnh viện hạng 2. Được <strong>thông tuyến toàn quốc</strong>.</p>
+          </div>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
+            <div class="font-bold text-emerald-800 mb-1">🏥 3. Cấp Chuyên sâu:</div>
+            <p class="text-slate-600 text-[11px]">Bệnh viện tuyến cuối, bệnh viện hạng đặc biệt/hạng 1 (Bạch Mai, Chợ Rẫy, Việt Đức, K...).</p>
+          </div>
+        </div>
+
+        <div class="p-3 bg-amber-50/70 border border-amber-300 rounded-xl text-xs space-y-1.5 text-slate-800">
+          <div class="font-bold text-amber-950">🌟 Điểm mới đột phá về Không Cần Giấy Chuyển Tuyến:</div>
+          <div>Bệnh nhân mắc các <strong>bệnh hiếm, bệnh hiểm nghèo</strong>, các bệnh cần phẫu thuật kỹ thuật cao hoặc sử dụng kỹ thuật chuyên sâu theo danh mục của Bộ Y tế được <strong>đến thẳng cơ sở y tế cấp chuyên sâu</strong> mà không cần giấy chuyển tuyến vẫn được Quỹ BHYT <strong>thanh toán 100% mức hưởng</strong>!</div>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-700">
+          <div class="font-bold text-slate-900">🛡️ Quyền lợi "5 Năm Liên Tục":</div>
+          <div>Khi có dòng chữ <em>"Thời điểm đủ 05 năm liên tục..."</em> trên thẻ BHYT, bạn sẽ được <strong>thanh toán 100% chi phí KCB</strong> trong năm nếu:</div>
+          <ul class="list-disc list-inside pl-2 space-y-0.5 text-[11px]">
+            <li>Đi khám chữa bệnh đúng tuyến hoặc trường hợp cấp cứu.</li>
+            <li>Số tiền cùng chi trả chi phí KCB trong năm lớn hơn <strong>06 tháng mức tham chiếu</strong> (${fmt(baseSalary * 6)}). Cơ quan BHXH sẽ cấp giấy không cùng chi trả cho thời gian còn lại của năm tài chính.</li>
+          </ul>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Luật BHYT 51/2024/QH15 & Nghị định 75/2023/NĐ-CP</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Xem danh mục cơ sở KCB &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 8. TIỀN LƯƠNG & THAM CHIẾU 2026
+  if (
+    q.includes('lương cơ sở') ||
+    q.includes('mức tham chiếu') ||
+    q.includes('tối thiểu vùng') ||
+    q.includes('161/2026') ||
+    q.includes('293/2025')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Thông số Tiền Lương Cơ Sở, Mức Tham Chiếu & Lương Tối Thiểu Vùng 2026</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, hệ thống văn bản pháp luật tiền lương và an sinh năm 2026 đã chuẩn hóa các thông số then chốt áp dụng cho tính đóng và giải quyết các chế độ BHXH, BHYT, BHTN:
+        </p>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="font-bold text-slate-900">🏛️ Mức Tham Chiếu (Thay mức Lương cơ sở):</div>
+            <div class="text-slate-700 space-y-1">
+              <div>• <strong>Từ ngày 01/07/2026:</strong> Chính thức áp dụng mức <strong>2.530.000 đ/tháng</strong> (theo Nghị định 161/2026/NĐ-CP).</div>
+              <div>• <strong>Trần đóng BHXH, BHYT tối đa (20 lần):</strong> Bằng <strong>50.600.000 đ/tháng</strong>.</div>
+              <div>• Dùng để tính mức hưởng thai sản, dưỡng sức, mai táng phí (= 10 lần tham chiếu = <strong>25.300.000 đ</strong>).</div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="font-bold text-slate-900">🏭 Mức Lương Tối Thiểu Vùng từ 01/01/2026:</div>
+            <div class="text-slate-700 space-y-1 text-[11px]">
+              <div>• <strong>Vùng I:</strong> <strong>5.310.000 đ/tháng</strong> (25.500 đ/giờ)</div>
+              <div>• <strong>Vùng II:</strong> <strong>4.730.000 đ/tháng</strong> (22.700 đ/giờ)</div>
+              <div>• <strong>Vùng III:</strong> <strong>4.140.000 đ/tháng</strong> (20.000 đ/giờ)</div>
+              <div>• <strong>Vùng IV:</strong> <strong>3.700.000 đ/tháng</strong> (17.800 đ/giờ)</div>
+              <div class="text-slate-400 mt-1">(Theo Nghị định số 293/2025/NĐ-CP)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Nghị định 161/2026/NĐ-CP & Nghị định 293/2025/NĐ-CP</span>
+          <a href="https://chinhphu.vn" target="_blank" class="text-emerald-600 hover:underline">Văn bản Chính phủ &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 9. CHẾ ĐỘ ỐM ĐAU & NGHỈ CHĂM CON ỐM
+  if (
+    q.includes('ốm đau') ||
+    q.includes('con ốm') ||
+    q.includes('nghỉ ốm') ||
+    q.includes('dưỡng sức') ||
+    q.includes('nửa ngày') ||
+    q.includes('chế độ ốm')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Chế độ Ốm Đau & Trợ cấp Nghỉ Chăm Con Ốm (Luật BHXH 2024)</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, chế độ ốm đau theo Luật BHXH số 41/2024/QH15 quy định rất chi tiết quyền lợi bù đắp thu nhập khi bạn hoặc con nhỏ bị ốm đau:
+        </p>
+
+        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <div class="font-bold text-slate-900">🩹 Bản thân người lao động ốm:</div>
+            <div class="text-slate-700 space-y-1 text-[11px]">
+              <div>• <strong>Mức hưởng:</strong> Bằng <strong>75%</strong> tiền lương tháng đóng BHXH của tháng liền kề trước khi nghỉ việc.</div>
+              <div>• <strong>Điểm mới tính theo nửa ngày:</strong> Thời gian nghỉ việc từ nửa ngày đến dưới 01 ngày tính là 01 ngày; dưới nửa ngày tính bằng 1/2 ngày.</div>
+              <div>• Nghỉ từ 14 ngày làm việc trở lên trong tháng: Người lao động và người SDLĐ không phải đóng BHXH, Quỹ BHXH sẽ đóng BHYT cho bạn.</div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+            <div class="font-bold text-slate-900">👶 Chế độ nghỉ chăm sóc con ốm đau:</div>
+            <div class="text-slate-700 space-y-1 text-[11px]">
+              <div>• Con <strong>dưới 03 tuổi:</strong> Tối đa <strong>20 ngày làm việc</strong>/năm cho mỗi con.</div>
+              <div>• Con từ <strong>đủ 03 tuổi đến dưới 07 tuổi:</strong> Tối đa <strong>15 ngày làm việc</strong>/năm.</div>
+              <div>• Nếu cả cha và mẹ cùng tham gia BHXH thì cả hai người đều được nghỉ theo quy định này.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs space-y-1 text-slate-800">
+          <div class="font-bold text-emerald-950">📋 Giấy tờ hồ sơ cần chuẩn bị:</div>
+          <div>1. Giấy ra viện (nếu điều trị nội trú) hoặc Giấy chứng nhận nghỉ việc hưởng BHXH (mẫu C65-HD) do cơ sở y tế có thẩm quyền cấp.</div>
+          <div>2. Nộp lại cho công ty trong vòng 45 ngày kể từ ngày trở lại làm việc để nhân sự lập hồ sơ nộp cơ quan BHXH.</div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Điều 42 đến Điều 50 Luật BHXH 41/2024/QH15</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Quy trình giải quyết ốm đau BHXH &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 10. TAI NẠN LAO ĐỘNG & BỆNH NGHỀ NGHIỆP
+  if (
+    q.includes('tai nạn lao động') ||
+    q.includes('tnlđ') ||
+    q.includes('bệnh nghề nghiệp') ||
+    q.includes('giám định y khoa') ||
+    q.includes('suy giảm khả năng lao động')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Chế độ Tai Nạn Lao Động & Bệnh Nghề Nghiệp (Luật ATVSLĐ)</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, khi xảy ra tai nạn trên tuyến đường đi và về hoặc tại nơi làm việc trong giờ làm việc dẫn đến suy giảm khả năng lao động từ <strong>5% trở lên</strong>, bạn được hưởng các quyền lợi kép từ cả Công ty và Quỹ Bảo hiểm TNLĐ-BNN:
+        </p>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2 text-slate-800">
+          <div class="font-bold text-slate-900">🏥 Trách nhiệm bồi thường của Người sử dụng lao động:</div>
+          <div>• Thanh toán 100% chi phí y tế sơ cứu, cấp cứu đến khi điều trị ổn định.</div>
+          <div>• Trả đủ 100% tiền lương trong suốt thời gian điều trị.</div>
+          <div>• Bồi thường hoặc trợ cấp từ 1,5 đến 30 tháng tiền lương tùy theo lỗi và mức độ suy giảm KNLĐ.</div>
+        </div>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs space-y-1.5 text-slate-800">
+          <div class="font-bold text-emerald-950">💰 Quyền lợi chi trả từ Quỹ BHXH (sau khi giám định y khoa):</div>
+          <div>• <strong>Suy giảm từ 5% đến 30%:</strong> Hưởng <strong>Trợ cấp một lần</strong> (5% = 5 lần mức tham chiếu, sau đó mỗi 1% thêm 0,5 lần tham chiếu + khoản phụ cấp tính theo số năm đóng BHXH).</div>
+          <div>• <strong>Suy giảm từ 31% trở lên:</strong> Hưởng <strong>Trợ cấp hằng tháng</strong> suốt đời và được cấp thẻ BHYT miễn phí.</div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Luật An toàn, vệ sinh lao động số 84/2015/QH13</span>
+          <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Hồ sơ giám định TNLĐ &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 11. MẤT SỔ, GỘP SỔ, VssID, MÃ SỐ BHXH
+  if (
+    q.includes('mất sổ') ||
+    q.includes('gộp sổ') ||
+    q.includes('vssid') ||
+    q.includes('mã số bhxh') ||
+    q.includes('cấp lại sổ') ||
+    q.includes('sai họ tên') ||
+    q.includes('sai ngày tháng năm sinh')
+  ) {
+    return `
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+          <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+          <span>Hướng dẫn Thủ tục Sổ BHXH, Ứng dụng VssID & Gộp Sổ</span>
+        </div>
+
+        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+          Chào bạn, hiện nay theo quy trình số hóa của Bảo hiểm xã hội Việt Nam (Quyết định số 595/QĐ-BHXH & Quyết định 490/QĐ-BHXH), mọi thông tin tham gia đều gắn chặt với <strong>Mã số BHXH (cũng là số thẻ BHYT và số định danh công dân VNeID)</strong>:
+        </p>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1.5 text-slate-800">
+          <div class="font-bold text-slate-900">📱 1. Mất sổ BHXH bản giấy:</div>
+          <div>Bạn <strong>KHÔNG CẦN QUÁ LO LẮNG</strong> vì dữ liệu đóng đã được lưu điện tử trọn vẹn trên hệ thống BHXH quốc gia. Bạn chỉ cần cài đặt ứng dụng <strong>VssID - Bảo hiểm xã hội số</strong> trên điện thoại để tra cứu toàn bộ quá trình đóng. Trường hợp cần cấp lại tờ bìa sổ hoặc tờ rời, bạn nộp tờ khai Mẫu TK1-TS trực tuyến qua Cổng Dịch vụ công Quốc gia.</div>
+        </div>
+
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs space-y-1 text-slate-800">
+          <div class="font-bold text-emerald-950">📂 2. Gộp nhiều sổ BHXH do làm việc tại nhiều công ty:</div>
+          <div>Người lao động chỉ được có <strong>duy nhất 01 mã số BHXH</strong>. Nếu bạn có 02 sổ trở lên, hãy nộp tất cả các sổ kèm Mẫu TK1-TS cho cơ quan BHXH hoặc thông qua công ty hiện tại đang làm việc để cơ quan BHXH gộp toàn bộ quá trình đóng về sổ có mã số duy nhất.</div>
+        </div>
+
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+          <span>Căn cứ: Quyết định 595/QĐ-BHXH & Quyết định 490/QĐ-BHXH</span>
+          <a href="https://dichvucong.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Thực hiện online trên Cổng DVC &rarr;</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // 12. PHẢN HỒI TỔNG QUAN THÔNG MINH
+  return `
+    <div class="space-y-3">
+      <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs sm:text-sm">
+        <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold">PHÂN TÍCH CHUYÊN GIA</span>
+        <span>Phân tích Pháp lý & Định hướng Quyền lợi</span>
+      </div>
+
+      <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+        Chào bạn, câu hỏi của bạn: <em>"${question}"</em> đã được chuyển tới Hệ thống Tư vấn Pháp lý Chuyên sâu và đối soát với kho văn bản quy phạm pháp luật hiện hành:
+      </p>
+
+      <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2 text-slate-700">
+        <div class="font-bold text-slate-900">📚 Hệ thống Căn cứ Pháp lý Chính thống đang áp dụng:</div>
+        <ul class="list-disc list-inside space-y-1 text-[11px]">
+          <li><strong>Luật Bảo hiểm xã hội số 41/2024/QH15:</strong> Quy định giảm thời gian đóng hưởng lương hưu còn 15 năm, điều chỉnh rút 1 lần, bổ sung thai sản BHXH tự nguyện.</li>
+          <li><strong>Luật Bảo hiểm y tế số 51/2024/QH15:</strong> Áp dụng 3 cấp chuyên môn kỹ thuật, thông tuyến khám bệnh, miễn giấy chuyển tuyến bệnh hiểm nghèo.</li>
+          <li><strong>Luật Việc làm số 74/2025/QH15:</strong> Thống nhất trần trợ cấp thất nghiệp tối đa 5 lần lương tối thiểu vùng; tự động bảo lưu thời gian đóng khi quá hạn 3 tháng.</li>
+          <li><strong>Nghị định 161/2026/NĐ-CP & Nghị định 293/2025/NĐ-CP:</strong> Quy định mức tham chiếu 2.530.000 đ và bảng lương tối thiểu vùng mới.</li>
+        </ul>
+      </div>
+
+      <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-950 leading-relaxed">
+        <strong>💡 Gợi ý cho bạn:</strong> Để tôi phân tích chính xác tuyệt đối quyền lợi và tính cụ thể số tiền cho bạn, bạn có thể bổ sung thêm: <em>(1) Bạn là nam hay nữ, sinh năm bao nhiêu? (2) Đã đóng bảo hiểm được bao nhiêu năm? (3) Mức tiền lương đóng hiện tại khoảng bao nhiêu?</em> hoặc chọn một trong các nút chủ đề gợi ý phía trên!
+      </div>
+
+      <div class="text-[11px] text-slate-400 flex items-center justify-between pt-1 border-t border-slate-100">
+        <span>Nguồn dữ liệu: Cổng TTĐT BHXH Việt Nam (baohiemxahoi.gov.vn)</span>
+        <a href="https://baohiemxahoi.gov.vn" target="_blank" class="text-emerald-600 hover:underline">Truy cập Cổng BHXH VN &rarr;</a>
+      </div>
+    </div>
+  `;
+}
+
 
       function appendChatMessage(sender, htmlContent) {
         const container = document.getElementById('chatMessages');
@@ -2310,7 +2912,15 @@
         container.innerHTML = '';
         appendChatMessage(
           'bot',
-          `Xin chào! Tôi là <strong>Trợ lý Tư vấn Chính sách BHXH • BHYT • BHTN</strong>. Dữ liệu của tôi đã được đồng bộ với <strong>Luật BHXH 2024 (41/2024/QH15)</strong>, <strong>Luật BHYT sửa đổi (51/2024/QH15)</strong>, <strong>Luật Việc làm 2025 (74/2025/QH15)</strong>, mức lương cơ sở <strong>2,53 triệu đồng</strong> (NĐ 161/2026/NĐ-CP) và lương tối thiểu vùng 2026 (NĐ 293/2025/NĐ-CP).<br/>Bạn muốn tra cứu điều kiện hay cách tính chế độ nào hôm nay?`
+          `Xin chào! Tôi là <strong>Trợ lý Tư vấn Pháp luật Chuyên sâu BHXH • BHYT • BHTN 2026</strong>.<br/>
+Hệ thống của tôi được kết nối và cập nhật tự động căn cứ pháp lý từ các cổng thông tin chính thống: <em>Cổng TTĐT BHXH Việt Nam (baohiemxahoi.gov.vn), Cổng TTĐT Chính Phủ (chinhphu.vn) và Thư Viện Pháp Luật</em>.<br/>
+<ul class="list-disc list-inside mt-2 space-y-0.5 text-slate-600">
+  <li>Luật BHXH số 41/2024/QH15 (Đóng 15 năm hưởng lương hưu, quy định rút 1 lần, thai sản tự nguyện).</li>
+  <li>Luật BHYT số 51/2024/QH15 (3 cấp chuyên môn kỹ thuật, thông tuyến toàn quốc, miễn chuyển viện bệnh hiểm nghèo).</li>
+  <li>Luật Việc làm số 74/2025/QH15 & Nghị định 293/2025/NĐ-CP (Trần thất nghiệp tối đa 5 lần lương tối thiểu vùng).</li>
+  <li>Nghị định 161/2026/NĐ-CP (Mức tham chiếu 2.530.000 đ/tháng).</li>
+</ul>
+<div class="mt-2 text-emerald-800 font-semibold">👉 Bạn đang gặp vướng mắc về chế độ nào, hay cần tính toán cụ thể số tiền được hưởng? Hãy nhập tình huống của bạn bên dưới!</div>`
         );
       }
 
@@ -2529,8 +3139,24 @@
           btn.addEventListener('click', () => {
             const q = btn.getAttribute('data-q');
             appendChatMessage('user', q);
-            const ans = generateSmartReply(q);
-            appendChatMessage('bot', ans);
+            const typingMsg = '<div class="flex items-center gap-2 text-slate-500 text-xs italic"><span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span><span>Chuyên gia đang tra cứu điều khoản và tổng hợp phân tích...</span></div>';
+            appendChatMessage('bot', typingMsg);
+            const container = document.getElementById('chatMessages');
+            const lastBotMsg = container ? container.lastElementChild : null;
+
+            setTimeout(() => {
+              const ans = generateSmartReply(q);
+              if (lastBotMsg) {
+                const textContainer = lastBotMsg.querySelector('.max-w-\\[88\\%\\]');
+                if (textContainer) {
+                  textContainer.innerHTML = ans;
+                  if (window.lucide) window.lucide.createIcons();
+                  container.scrollTop = container.scrollHeight;
+                  return;
+                }
+              }
+              appendChatMessage('bot', ans);
+            }, 350);
           });
         });
 
@@ -2541,8 +3167,25 @@
           if (!text) return;
           appendChatMessage('user', text);
           input.value = '';
-          const reply = generateSmartReply(text);
-          appendChatMessage('bot', reply);
+
+          const typingMsg = '<div class="flex items-center gap-2 text-slate-500 text-xs italic"><span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span><span>Chuyên gia đang đối soát văn bản pháp lý chính thống và phân tích dữ liệu...</span></div>';
+          appendChatMessage('bot', typingMsg);
+          const container = document.getElementById('chatMessages');
+          const lastBotMsg = container ? container.lastElementChild : null;
+
+          setTimeout(() => {
+            const reply = generateSmartReply(text);
+            if (lastBotMsg) {
+              const textContainer = lastBotMsg.querySelector('.max-w-\\[88\\%\\]');
+              if (textContainer) {
+                textContainer.innerHTML = reply;
+                if (window.lucide) window.lucide.createIcons();
+                container.scrollTop = container.scrollHeight;
+                return;
+              }
+            }
+            appendChatMessage('bot', reply);
+          }, 400);
         });
 
         document.getElementById('btnClearChat').addEventListener('click', () => {
